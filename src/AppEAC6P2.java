@@ -1,4 +1,7 @@
 
+import java.io.File;
+
+
 /*
 * @author Alejandro Santiago
 */
@@ -56,7 +59,7 @@ public class AppEAC6P2 {
                 "9. Gestió de dades\n",
                 "0. Sortir\n\n"
             };
-        
+
         do{
             mostrarMenu(menuPrincipal);
             opcio = UtilsES.demanarEnter(MISSATGE_TRII_OPCIO, MISSATGE_ERROR_LECTURA);
@@ -273,6 +276,7 @@ public class AppEAC6P2 {
                     trobaStringArray(posMedalla, dadesVila.valorsMedalles);
                 dadesVila.numAtletesRegistrats++;
                 dadesVila.codiUltimAtleta++;
+                fileUtils.guardaOcupacio(dadesVila);
             }else{
                 System.out.println("ERROR! l'ATLETA amb codi " + codiAtleta + " ja es troba a la vila olímpica");
             }
@@ -292,7 +296,8 @@ public class AppEAC6P2 {
         // Important: Mai fer servir un bucle tipus for, si hem de terminar la seva
         // execucio a mig cami (en aquest cas, el codi d'atleta a l'array)
         while( posIndex < atlVilaOlimp.length && !trobat){
-            trobat = atlVilaOlimp[posIndex][DadesVila.ID_ATLETA].equalsIgnoreCase(codiAtleta);
+            trobat = atlVilaOlimp[posIndex][DadesVila.ID_ATLETA] != null &&
+                atlVilaOlimp[posIndex][DadesVila.ID_ATLETA].equalsIgnoreCase(codiAtleta);
             posIndex++;
         }
 
@@ -320,7 +325,8 @@ public class AppEAC6P2 {
         // Important: Mai fer servir un bucle tipus for, si hem de terminar la seva
         // execucio a mig cami (en aquest cas, quan trobem habitacio lliure)
         while(posIndex < atlVilaOlimp.length && !habitacioTrobada) {
-            habitacioTrobada = atlVilaOlimp[posIndex][DadesVila.ID_ATLETA].equals("");
+            habitacioTrobada = atlVilaOlimp[posIndex][DadesVila.ID_ATLETA] == null
+                    || atlVilaOlimp[posIndex][DadesVila.ID_ATLETA].equals("");
             posIndex++; 
         }
 

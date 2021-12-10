@@ -1,6 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
@@ -21,6 +26,10 @@ public class FileUtils {
     public void inicialitza() {
         // Per defecte es el directori de treball + /dades 
         directoriDades = System.getProperty("user.dir") + File.separator + "dades";
+        File dadesDir = new File(directoriDades);
+        if (!dadesDir.exists()) {
+            dadesDir.mkdir();
+        }
         mostraDirectoryDades();
     }
 
@@ -133,10 +142,17 @@ public class FileUtils {
 
         String nomFitxer = directoriDades + File.separator + DATA_FILE;
 
-        DadesVila dVila;
+        DadesVila dVila = new DadesVila();
         
-
-        
+        String file = "my-file.txt";
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error.");
+        }
 
         return dVila;
     }
@@ -148,8 +164,32 @@ public class FileUtils {
      */
     public void guardaOcupacio(DadesVila dVila) {
 
-        String nomFitxer = directoriDades + File.separator + DATA_FILE;
-
+        try {
+            String nomFitxer = directoriDades + File.separator + DATA_FILE;
+            File dadesFile = new File(nomFitxer);
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(dadesFile);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+            
+            for (int i = 0; i < dVila.numAtletesRegistrats; i++) {
+                try {
+                    bw.write(dVila.atletesVilaOlimpica[i][0] + ", " +
+                            dVila.atletesVilaOlimpica[i][1] + ", " +
+                            dVila.atletesVilaOlimpica[i][2] + ",");
+                    bw.newLine();
+                } catch (IOException ex) {
+                    Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     
