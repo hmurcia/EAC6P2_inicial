@@ -71,15 +71,15 @@ public class AppEAC6P2 {
                     opcioMenuMarxa();
                     break;
                 case 3:
-                	opcioMenuMostra();
+                    opcioMenuMostra();
                     break;
                 case 4:
                     opcioBuscarAtletaHistoric(dadesVila);
                     break;
               
                 case 9:
-                	subMenuDades();
-                	break;
+                    subMenuDades();
+                    break;
                 case 0:
                     System.out.println(MISSATGE_COMIAT);
                     fileUtils.guardaOcupacio(dadesVila);
@@ -174,7 +174,7 @@ public class AppEAC6P2 {
         int codiPais = UtilsES.demanarPais(dadesVila.valorsPaisos, MISSATGE_TRII_OPCIO, MISSATGE_ERROR_LECTURA);
         int codiMedalles = UtilsES.demanarTipusMedalla(dadesVila.valorsMedalles, MISSATGE_TRII_OPCIO, MISSATGE_ERROR_LECTURA);
         String codiAtleta = generarCodiAtleta(dadesVila.codiUltimAtleta);
-        registraAtleta( codiAtleta,codiPais,codiMedalles);
+        registraAtleta( codiAtleta,codiPais,codiMedalles); ///~VALIDAR codiAtleta~///
     }
 
     private void opcioMenuMarxa(){
@@ -562,6 +562,4 @@ public class AppEAC6P2 {
            }
        }
    }
-    
-    
 }

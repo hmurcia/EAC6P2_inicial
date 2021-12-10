@@ -143,15 +143,18 @@ public class FileUtils {
         String nomFitxer = directoriDades + File.separator + DATA_FILE;
 
         DadesVila dVila = new DadesVila();
-        
-        String file = "my-file.txt";
-        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+        try(BufferedReader br = new BufferedReader(new FileReader(nomFitxer))) {
             String line;
+            int nl = 0;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                String cols[] = line.split(",");
+                dVila.atletesVilaOlimpica[nl][0] = cols[0];
+                dVila.atletesVilaOlimpica[nl][1] = cols[1];
+                dVila.atletesVilaOlimpica[nl++][2] = cols[2];
             }
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error.");
+            System.out.println("Ha ocurrido un error. " + e.toString());
         }
 
         return dVila;
@@ -164,6 +167,9 @@ public class FileUtils {
      */
     public void guardaOcupacio(DadesVila dVila) {
 
+        if (dVila.numAtletesRegistrats == 0) {
+            return;
+        }
         try {
             String nomFitxer = directoriDades + File.separator + DATA_FILE;
             File dadesFile = new File(nomFitxer);
@@ -177,14 +183,10 @@ public class FileUtils {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
             
             for (int i = 0; i < dVila.numAtletesRegistrats; i++) {
-                try {
-                    bw.write(dVila.atletesVilaOlimpica[i][0] + ", " +
-                            dVila.atletesVilaOlimpica[i][1] + ", " +
-                            dVila.atletesVilaOlimpica[i][2] + ",");
-                    bw.newLine();
-                } catch (IOException ex) {
-                    Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                bw.write(dVila.atletesVilaOlimpica[i][0] + ", " +
+                        dVila.atletesVilaOlimpica[i][1] + ", " +
+                        dVila.atletesVilaOlimpica[i][2] + ",");
+                bw.newLine();
             }
             bw.close();
         } catch (IOException ex) {
